@@ -41,16 +41,16 @@ gameState.main.prototype = {
     },
 
     update: function() {
-    	if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+		if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 			cart.angle = -15;
 
-			cart.body.acceleration.x = -800;
+			cart.body.acceleration.x = -700;
 			cart.body.acceleration.y = 40;
 		}
 		else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 			cart.angle = 15;
 
-			cart.body.acceleration.x = 800;
+			cart.body.acceleration.x = 700;
 			cart.body.acceleration.y = 40;
 		}
 		else {
@@ -60,33 +60,37 @@ gameState.main.prototype = {
 		}
 
 		// roadSprite.tileScale.y += 1;
-    	this.game.physics.overlap(cart, rivals, this.restartGame, null, this);
+		this.game.physics.overlap(cart, rivals, this.restartGame, null, this);
     },
 
 	restartGame: function() {
-	    this.game.state.start('main');
-	    this.game.time.events.remove(timer);
-	    i = 0;
+		this.game.state.start('main');
+		this.game.time.events.remove(timer);
+		i = 0;
 	},
 
 	addOneRival: function(x, y, velocity) {
-	    var rivalDead = rivals.getFirstDead();
+		var rivalDead = rivals.getFirstDead();
 
-	    rivalDead.reset(x, y);
-
-	    rivalDead.body.velocity.y = velocity;
-
-	    rivalDead.outOfBoundsKill = true;
+		rivalDead.reset(x, y);
+		rivalDead.body.velocity.y = velocity;
+		rivalDead.outOfBoundsKill = true;
 	},
 
 	addRival: function() {
 		i += 20;
 		var incVelocity = (500 + i);
-	    this.addOneRival(game.rnd.integerInRange(50, 450), 0, incVelocity);
-	    score += 1;
+
+		// every seventh rival drop the rival directly on the cart
+		if ( i % 7 === 0 )
+			this.addOneRival(cart.x, 0, incVelocity);
+		else
+			this.addOneRival(game.rnd.integerInRange(50, 450), 0, incVelocity);
+
+		score += 1;
 		this.label_score.content = 'Score: ' + score;
 	},
-}
+};
 
 game.state.add('main', gameState.main);
 game.state.start('main');
