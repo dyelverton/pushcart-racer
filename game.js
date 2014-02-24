@@ -41,24 +41,22 @@ gameState.main.prototype = {
     },
 
     update: function() {
-    	if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-		{
-
+    	if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 			cart.angle = -15;
 
 			cart.body.acceleration.x = -800;
+			cart.body.acceleration.y = 40;
 		}
-		else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-		{
-
+		else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 			cart.angle = 15;
 
 			cart.body.acceleration.x = 800;
+			cart.body.acceleration.y = 40;
 		}
-		else
-		{
+		else {
 			cart.rotation = 0;
-			cart.body.acceleration.x = 0;
+			cart.body.acceleration.setTo(0,0);
+			cart.body.acceleration.y = -5;
 		}
 
 		// roadSprite.tileScale.y += 1;
